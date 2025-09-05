@@ -6,6 +6,7 @@
 
 from length import Length
 from temperature import Temperature
+from data import Data
 
 
 class Main:
@@ -17,7 +18,8 @@ class Main:
             print("\n{:^20}".format("Conversion Type"))
             print(f"  1. LENGTH\n"
                   f"  2. TEMPERATURE\n"
-                  f"  3. EXIT\n")
+                  f"  3. DATA\n"
+                  f"  4. EXIT\n")
             print("=" * 20)
 
             conversion_type = input(": ")
@@ -27,6 +29,8 @@ class Main:
             elif conversion_type == "2":
                 self.temperature_converter()
             elif conversion_type == "3":
+                self.data_converter()
+            elif conversion_type == "4":
                 input("Press Enter to Exit")
                 print("Bye!")
                 break
@@ -49,7 +53,7 @@ class Main:
         except (ValueError, IndexError):
             print("Invalid Input. Please try again.")
             return
-        
+
         #GET UNIT FROM UNIT INDEX
         from_unit = units[from_index]
         to_unit = units[to_index]
@@ -76,10 +80,12 @@ class Main:
         from_unit = units[from_index]
         to_unit = units[to_index]
 
-        if from_unit == 'celsius' and to_unit == 'fahrenheit':
+        if from_unit == to_unit:
+            result = value
+        elif from_unit == 'celsius' and to_unit == 'fahrenheit':
             result = Temperature.celsius_to_fahrenheit(value)
 
-        elif from_unit == ' fahrenheit' and to_unit == 'celsius':
+        elif from_unit == 'fahrenheit' and to_unit == 'celsius':
             result = Temperature.fahrenheit_to_celsius(value)
 
         else:
@@ -87,6 +93,28 @@ class Main:
             return
 
         print(f"\n{value}° {from_unit.capitalize()} is {result:.2f}° to {to_unit.capitalize()}")
+
+
+    def data_converter(self):
+        units = ['megabyte', 'byte', 'kilobyte', 'gigabyte']
+
+        for i, unit in enumerate(units, start=1):
+            print(f"{i}. {unit}")
+
+        try:
+            from_index = int(input("Convert From (choose a number): ")) -1
+            to_index = int(input("Convert To (choose a number): ")) -1
+            value = float(input("Value to Convert\n: "))
+
+        except (ValueError, IndexError):
+            print("Invalid Input. Please try again.")
+            return
+
+        from_unit = units[from_index]
+        to_unit = units[to_index]
+
+        result = Data.convert(value, from_unit, to_unit)
+        print(f"\n{value} from {from_unit.capitalize()} is {result:.4f} to {to_unit.capitalize()}")
 
 
 if __name__ == "__main__":
